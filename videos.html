@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.11.13/html-to-image.min.js" integrity="sha512-iZ2ORl595Wx6miw+GuadDet4WQbdSWS3JLMoNfY8cRGoEFy6oT3G9IbcrBeL6AfkgpA51ETt/faX6yLV+/gFJg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
+  
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Educational Videos | EcoSystem</title>
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f9fc;
+            color: #2c4859;
+            line-height: 1.6;
+        }
+        
+        /* Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        /* Navigation Bar */
+        .navbar {
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 10px rgba(44, 72, 89, 0.1);
+            padding: 1rem 5%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #2c4859;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo span {
+            color: #4a90c0;
+        }
+        
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            margin-right: 10px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4a90c0, #2c4859);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .logo-icon::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 40%;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 1.5rem;
+        }
+
+        .navbar ul{
+            padding-left: 225px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #2c4859;
+            font-weight: 500;
+            font-size: 1rem;
+            position: relative;
+            padding: 0.2rem 2.5;
+            transition: color 1s ease 
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: #4a90c0;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            color: #4a90c0;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        /* Dropdown Menu Styles */
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: white;
+            min-width: 220px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 0.5rem 0;
+            margin-top: 1px;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .dropdown-content a {
+            color: #2c4859;
+            padding: 0.8rem 1.5rem;
+            text-decoration: none;
+            display: block;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f8fafc;
+            color: #4a90c0;
+            padding-left: 2rem;
+        }
+
+        .dropdown-content a::after {
+            display: none;
+        }	
+
+        
+        /* Header Section */
+        .page-header {
+            background: linear-gradient(135deg, #2c4859 0%, #4a90c0 100%);
+            padding: 8rem 5% 4rem;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .page-header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" fill="rgba(255,255,255,0.1)"></path></svg>') repeat-x;
+            background-size: 1200px 120px;
+            opacity: 0.3;
+        }
+        
+        .page-header-content {
+            position: relative;
+            z-index: 1;
+            animation: fadeInUp 1s ease-out;
+        }
+        
+        .page-header h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        
+        .page-header p {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* Main Content */
+        .main-content {
+            padding: 4rem 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* Video Section */
+        .video-section {
+            margin-bottom: 4rem;
+            animation: fadeInUp 0.8s ease-out;
+        }
+        
+        .video-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .video-title {
+            font-size: 2.5rem;
+            color: #2c4859;
+            margin-bottom: 1rem;
+        }
+        
+        .video-subtitle {
+            font-size: 1.2rem;
+            color: #5d7a8c;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* Video Grid */
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .video-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(44, 72, 89, 0.1);
+            transition: all 0.3s ease;
+            animation: slideInLeft 0.8s ease-out;
+        }
+        
+        .video-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(44, 72, 89, 0.15);
+        }
+        
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+            overflow: hidden;
+        }
+        
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .video-content {
+            padding: 1.5rem;
+        }
+        
+        .video-title {
+            font-size: 1.2rem;
+            color: #2c4859;
+            margin-bottom: 0.5rem;
+        }
+        
+        .video-description {
+            font-size: 0.9rem;
+            color: #5d7a8c;
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: #2c4859;
+            color: white;
+            padding: 3rem 5% 1rem;
+            text-align: center;
+            margin-top: 4rem;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: #78b7dc;
+        }
+        
+        .copyright {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 1rem;
+        }
+        
+       /* Responsive Design */
+       @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .page-header p {
+                font-size: 1.1rem;
+            }
+            
+            .conservation-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .steps-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .main-content {
+                padding: 2rem 5%;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .dropdown-content {
+                position: static;
+                box-shadow: none;
+                padding-left: 1rem;
+                margin-top: 0.5rem;
+                display: none;
+            }
+
+            .dropdown.active .dropdown-content {
+                display: block;
+            }
+
+            .dropdown-content a {
+                padding: 0.8rem 1rem;
+            }
+
+            .dropdown-content a:hover {
+                padding-left: 1.5rem;
+            }
+        }
+
+
+    </style>
+</head>
+<body id="artifacts-component-root-html">
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <div class="logo-icon"></div>
+            Eco<span>Sys360</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li class="dropdown">
+                <a href="#">Ecosystems</a>
+                <div class="dropdown-content">
+                    <a href="ocean.html">Oceans & Marine Life</a>
+                    <a href="forest.html">Forests & Woodlands</a>
+                    <a href="wetland.html">Wetlands</a>
+                    <a href="corals.html">Coral Reefs</a>
+                    <a href="desert.html">Deserts</a>
+                </div>
+            </li>
+            <li class="dropdown">
+                <a href="#">Threats</a>
+                <div class="dropdown-content">
+                    <a href="climatechange.html">Climate Change</a>
+                    <a href="pollution.html">Pollution</a>
+                    <a href="deforestation.html">Deforestation</a>
+                    <a href="urban.html">Urbanization & Land Conversion</a>
+                </div>
+            </li>
+            <li class="dropdown">
+                <a href="#">Preservation</a>
+                <div class="dropdown-content">
+                    <a href="strategies.html">Conservation and Strategies</a>
+                    <a href="individualAction.html">Individual Actions</a>
+                    <a href="communityInitiatives.html">Community Initiatives</a>
+                </div>
+            </li>
+            <li class="dropdown">
+                <a href="#">Resources</a>
+                <div class="dropdown-content">
+                    <a href="resources.html">Infographics & PDFs</a>
+                    <a href="videos.html">Educational Videos/Animations</a>
+                    <a href="external.html">External Links</a>
+                </div>
+            </li>
+            <li><a href="community.html">Community</a></li>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+        <div class="mobile-menu">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </nav>
+    
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="page-header-content">
+            <h1>Educational Videos</h1>
+            <p>Explore our curated collection of educational videos and animations about ecosystems, their components, and conservation success stories.</p>
+        </div>
+    </section>
+    
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Understanding Ecosystems -->
+        <section class="video-section">
+            <div class="video-header">
+                <h2 class="video-title">Understanding Ecosystems</h2>
+                <p class="video-subtitle">Learn about how ecosystems work and their importance through engaging educational videos</p>
+            </div>
+            
+            <div class="video-grid">
+                <div class="video-card">
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/SNF8b7KKJ2I" title="Ecosystems for Kids" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="video-content">
+                        <h3 class="video-title">Ecosystems for Kids</h3>
+                        <p class="video-description">A kid-friendly introduction to ecosystems and their importance</p>
+                    </div>
+                </div>
+                
+                <div class="video-card">
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/EETmdBq6aMY" title="What are Ecosystems | Science for Kids" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="video-content">
+                        <h3 class="video-title">What are Ecosystems | Science for Kids</h3>
+                        <p class="video-description">Scientific explanation of ecosystems and their components</p>
+                    </div>
+                </div>
+                
+                <div class="video-card">
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/ZIBxYdWHl0E" title="Difference between Biotic and Abiotic Factors" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="video-content">
+                        <h3 class="video-title">Biotic and Abiotic Factors</h3>
+                        <p class="video-description">Understanding the living and non-living components of ecosystems</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Conservation Success Stories -->
+        <section class="video-section">
+            <div class="video-header">
+                <h2 class="video-title">Conservation Success Stories</h2>
+                <p class="video-subtitle">Discover inspiring stories of ecosystem restoration and conservation efforts</p>
+            </div>
+            
+            <div class="video-grid">
+                <div class="video-card">
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/JYNpHEVCVb4" title="Why Ecosystem Restoration Matters" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="video-content">
+                        <h3 class="video-title">Why Ecosystem Restoration Matters</h3>
+                        <p class="video-description">Understanding the importance of ecosystem restoration for our planet's future</p>
+                    </div>
+                </div>
+                
+                <div class="video-card">
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/MGz9vfUdJBk" title="Top 10 Forgotten Conservation Success Stories" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="video-content">
+                        <h3 class="video-title">Top 10 Forgotten Conservation Success Stories</h3>
+                        <p class="video-description">Inspiring stories of successful conservation efforts around the world</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="index.html">Home</a>
+            <a href="#">Ecosystems</a>
+            <a href="#">Threats</a>
+            <a href="#">Resources</a>
+            <a href="#">Videos</a>
+            <a href="#">About</a>
+            <a href="#">Contact</a>
+        </div>
+        <div class="copyright">
+            © 2025 EcoSystem. All rights reserved. | Video credits: YouTube content creators
+        </div>
+    </footer>
+    
+    <!-- JavaScript -->
+    <script>
+    // Navbar scroll effect
+    window.addEventListener('scroll', () => {
+        const navbar = document.querySelector('.navbar');
+        if (!navbar) return;
+        if (window.scrollY > 50) {
+            navbar.style.backgroundColor = 'rgba(255, 255, 255, 0.98)';
+            navbar.style.padding = '0.5rem 5%';
+        } else {
+            navbar.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
+            navbar.style.padding = '1rem 5%';
+        }
+    });
+
+    // Intersection Observer for animations
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -100px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    // Observe all cards and sections
+    document.addEventListener('DOMContentLoaded', () => {
+        const animatedElements = document.querySelectorAll('.video-card, .video-section');
+        animatedElements.forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+    });
+    </script>
+</body>
+</html> 

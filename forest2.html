@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forest Ecosystems | EcoSys360</title>
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f9fc;
+            color: #2c4859;
+            overflow-x: hidden;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        @keyframes wave {
+            0% { transform: translateX(0) translateZ(0) scaleY(1); }
+            50% { transform: translateX(-25%) translateZ(0) scaleY(0.8); }
+            100% { transform: translateX(-50%) translateZ(0) scaleY(1); }
+        }
+        
+        @keyframes leafFloat {
+            0% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-8px) rotate(5deg); }
+            66% { transform: translateY(-12px) rotate(-3deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+        
+        /* Navigation Bar */
+        .navbar {
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 10px rgba(44, 72, 89, 0.1);
+            padding: 1rem 5%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar.scrolled {
+            padding: 0.5rem 5%;
+            background-color: rgba(255, 255, 255, 0.98);
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #2c4859;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo span {
+            color: #228B22;
+        }
+        
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            margin-right: 10px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #228B22, #006400);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .logo-icon::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 40%;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 2rem;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #2c4859;
+            font-weight: 500;
+            font-size: 1rem;
+            position: relative;
+            padding: 0.5rem 0;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: #228B22;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            color: #228B22;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .mobile-menu {
+            display: none;
+            cursor: pointer;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, rgba(34, 139, 34, 0.9), rgba(0, 100, 0, 0.8)), url('images/Forests.jpg');
+            background-size: cover;
+            background-position: center;
+            padding: 10rem 5% 6rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            color: white;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            position: relative;
+            z-index: 1;
+            animation: fadeIn 1s ease-out;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            color: white;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+        
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .stat-item {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #90EE90;
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #228B22, #006400);
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(34, 139, 34, 0.3);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(34, 139, 34, 0.4);
+        }
+        
+        /* Forest Types Section */
+        .forest-types {
+            padding: 5rem 5%;
+            background-color: #ffffff;
+            position: relative;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #2c4859;
+        }
+        
+        .section-subtitle {
+            text-align: center;
+            color: #5d7a8c;
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            font-size: 1.1rem;
+        }
+        
+        .forest-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .forest-card {
+            background-color: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(44, 72, 89, 0.1);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+        
+        .forest-card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .forest-card:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        .forest-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(44, 72, 89, 0.15);
+        }
+        
+        .forest-image {
+            height: 250px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .tropical-bg {
+            background: linear-gradient(135deg, #228B22, #32CD32);
+            background-image: url('images/TropicalForests.jpg');
+        }
+        
+        .temperate-bg {
+            background: linear-gradient(135deg, #8FBC8F, #228B22);
+            background-image: url('images/TemperateForests.jpg');
+        }
+        
+        .boreal-bg {
+            background: linear-gradient(135deg, #006400, #2F4F2F);
+            background-image: url('images/boreal.jpg');
+        }
+        
+        .forest-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 4rem;
+            animation: leafFloat 4s ease-in-out infinite;
+        }
+        
+        .forest-card:nth-child(2) .forest-icon {
+            animation-delay: 1s;
+        }
+        
+        .forest-card:nth-child(3) .forest-icon {
+            animation-delay: 2s;
+        }
+        
+        .forest-content {
+            padding: 2rem;
+        }
+        
+        .forest-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #2c4859;
+        }
+        
+        .forest-facts {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+        
+        .forest-facts li {
+            margin-bottom: 0.8rem;
+            color: #5d7a8c;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+        
+        .forest-facts li::before {
+            content: "🌿";
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+        
+        /* Key Facts Section */
+        .key-facts {
+            padding: 5rem 5%;
+            background: linear-gradient(135deg, #f0f8f0, #e6f7e6);
+            position: relative;
+        }
+        
+        .facts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .fact-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(34, 139, 34, 0.1);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+        
+        .fact-card:nth-child(2) { animation-delay: 0.2s; }
+        .fact-card:nth-child(3) { animation-delay: 0.4s; }
+        .fact-card:nth-child(4) { animation-delay: 0.6s; }
+        .fact-card:nth-child(5) { animation-delay: 0.8s; }
+        
+        .fact-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(34, 139, 34, 0.15);
+        }
+        
+        .fact-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+        
+        .fact-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #228B22;
+            margin-bottom: 0.5rem;
+        }
+        
+        .fact-label {
+            color: #2c4859;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .fact-description {
+            color: #5d7a8c;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        
+        /* Purpose Section */
+        .purpose-section {
+            padding: 5rem 5%;
+            background-color: #ffffff;
+        }
+        
+        .purpose-content {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .purpose-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #5d7a8c;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+        
+        .purpose-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .purpose-card {
+            background: linear-gradient(135deg, rgba(34, 139, 34, 0.05), rgba(0, 100, 0, 0.02));
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid rgba(34, 139, 34, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .purpose-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(34, 139, 34, 0.1);
+        }
+        
+        .purpose-card h4 {
+            color: #228B22;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+        
+        .purpose-card p {
+            color: #5d7a8c;
+            line-height: 1.6;
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: #2c4859;
+            color: white;
+            padding: 4rem 5% 2rem;
+        }
+        
+        .footer-container {
+            display: flex;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 0 auto;
+            gap: 2rem;
+        }
+        
+        .footer-col {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .footer-col:first-child {
+            flex: 2;
+            min-width: 300px;
+        }
+        
+        .footer-logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .footer-logo span {
+            color: #90EE90;
+        }
+        
+        .footer-desc {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+        
+        .back-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #228B22, #006400);
+            color: white;
+            padding: 0.6rem 1.5rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin-bottom: 1rem;
+        }
+        
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(34, 139, 34, 0.3);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 3rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem 5%;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero-stats {
+                gap: 1.5rem;
+            }
+            
+            .forest-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .facts-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
+            
+            .purpose-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <a href="#" class="logo">
+            <div class="logo-icon"></div>
+            Eco<span>Sys360</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="Le2.html">Home</a></li>
+            <li><a href="#overview">Overview</a></li>
+            <li><a href="#types">Forest Types</a></li>
+            <li><a href="#facts">Key Facts</a></li>
+            <li><a href="#purpose">Purpose</a></li>
+        </ul>
+        <div class="mobile-menu">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section class="hero" id="overview">
+        <div class="hero-content">
+            <h1>Forest <span style="color: #90EE90;">Ecosystems</span></h1>
+            <p>Forests are one of the most vital ecosystems on Earth, covering about 31% of the planet's land area. They are home to more than 80% of terrestrial species and are critical in regulating Earth's climate, water cycle, and carbon storage.</p>
+            
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <span class="stat-number">31%</span>
+                    <span class="stat-label">of Earth's Land</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">4.06B</span>
+                    <span class="stat-label">Hectares Covered</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">80%</span>
+                    <span class="stat-label">Terrestrial Species</span>
+                </div>
+            </div>
+            
+            <a href="#types" class="cta-button">Explore Forest Types</a>
+        </div>
+    </section>
+    
+    <!-- Forest Types Section -->
+    <section class="forest-types" id="types">
+        <h2 class="section-title">Types of Forests</h2>
+        <p class="section-subtitle">Discover the three major forest types that shape our planet's terrestrial ecosystems, each with unique characteristics and vital ecological roles.</p>
+        
+        <div class="forest-grid">
+            <div class="forest-card">
+                <div class="forest-image tropical-bg">
+                    
+                </div>
+                <div class="forest-content">
+                    <h3>Tropical Forests</h3>
+                    <ul class="forest-facts">
+                        <li>Found near the equator (Amazon, Congo Basin, Southeast Asia)</li>
+                        <li>Contain over half of the world's plant and animal species</li>
+                        <li>Store vast amounts of carbon — one hectare can hold over 200 metric tons</li>
+                        <li>Year-round warm temperatures and high rainfall</li>
+                        <li>Multi-layered canopy structure supporting incredible biodiversity</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="forest-card">
+                <div class="forest-image temperate-bg">
+                    
+                </div>
+                <div class="forest-content">
+                    <h3>Temperate Forests</h3>
+                    <ul class="forest-facts">
+                        <li>Located in North America, Europe, and parts of Asia</li>
+                        <li>Characterized by four seasons and deciduous trees</li>
+                        <li>Key to supporting migratory bird species and diverse mammals</li>
+                        <li>Rich soil layers from seasonal leaf fall</li>
+                        <li>Moderate climate with distinct seasonal changes</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="forest-card">
+                <div class="forest-image boreal-bg">
+                    
+                </div>
+                <div class="forest-content">
+                    <h3>Boreal (Taiga) Forests</h3>
+                    <ul class="forest-facts">
+                        <li>Spread across Canada, Russia, and Scandinavia</li>
+                        <li>The world's largest terrestrial biome</li>
+                        <li>Store about 703 gigatonnes of carbon in biomass and soil</li>
+                        <li>Dominated by coniferous trees adapted to cold climates</li>
+                        <li>Critical habitat for many northern wildlife species</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Key Facts Section -->
+    <section class="key-facts" id="facts">
+        <h2 class="section-title">Key Facts & Significance</h2>
+        <p class="section-subtitle">Understanding the critical role forests play in maintaining our planet's health and supporting life on Earth.</p>
+        
+        <div class="facts-grid">
+            <div class="fact-card">
+                <span class="fact-icon">🌍</span>
+                <div class="fact-number">2.6B</div>
+                <div class="fact-label">Tonnes CO₂ Absorbed</div>
+                <p class="fact-description">Forests serve as a critical global carbon sink, absorbing approximately 2.6 billion tonnes of CO₂ annually, helping mitigate climate change.</p>
+            </div>
+            
+            <div class="fact-card">
+                <span class="fact-icon">🦋</span>
+                <div class="fact-number">80%</div>
+                <div class="fact-label">Terrestrial Species</div>
+                <p class="fact-description">Forests are home to over 80% of Earth's terrestrial species, making them biodiversity powerhouses supporting intricate ecological webs.</p>
+            </div>
+            
+            <div class="fact-card">
+                <span class="fact-icon">💧</span>
+                <div class="fact-number">40%</div>
+                <div class="fact-label">Freshwater Supply</div>
+                <p class="fact-description">Forests play a key role in the water cycle, influencing rainfall patterns and maintaining the supply of clean freshwater globally.</p>
+            </div>
+            
+            <div class="fact-card">
+                <span class="fact-icon">👥</span>
+                <div class="fact-number">1.6B</div>
+                <div class="fact-label">People Depend on Forests</div>
+                <p class="fact-description">Around 1.6 billion people depend directly on forests for food, shelter, medicine, and income, reflecting their socio-economic importance.</p>
+            </div>
+            
+            <div class="fact-card">
+                <span class="fact-icon">🍃</span>
+                <div class="fact-number">40%</div>
+                <div class="fact-label">Planet's Oxygen</div>
+                <p class="fact-description">Through photosynthesis, forests generate nearly 40% of the planet's oxygen, making them essential to sustaining life on Earth.</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Purpose Section -->
+    <section class="purpose-section" id="purpose">
+        <div class="purpose-content">
+            <h2 class="section-title">Purpose of Forest Ecosystems</h2>
+            <p class="purpose-text">The purpose of forest ecosystems is multifaceted, serving as a cornerstone of environmental stability and human well-being. Forests provide essential ecological services that sustain life on Earth while supporting diverse communities and cultures worldwide.</p>
+            
+            <div class="purpose-grid">
+                <div class="purpose-card">
+                    <h4>🌡️ Climate Regulation</h4>
+                    <p>Stabilizing atmospheric carbon dioxide levels, mitigating global warming, and influencing local weather patterns through natural climate control mechanisms.</p>
+                </div>
+                
+                <div class="purpose-card">
+                    <h4>🏠 Habitat Provision</h4>
+                    <p>Providing essential habitats for a vast array of flora and fauna, supporting biodiversity from the forest floor to the canopy in complex ecosystems.</p>
+                </div>
+                
+                <div class="purpose-card">
+                    <h4>🏭 Resource Generation</h4>
+                    <p>Generating vital resources such as timber, fuelwood, food, and medicinal plants, sustaining both global industries and local communities.</p>
+                </div>
+                
+                <div class="purpose-card">
+                    <h4>🏛️ Cultural Significance</h4>
+                    <p>Holding deep cultural and spiritual significance, particularly for Indigenous Peoples whose traditions, identities, and livelihoods are closely tied to forest landscapes.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-col">
+                <div class="footer-logo">Forest<span>Hub</span></div>
+                <p class="footer-desc">Dedicated to understanding and protecting Earth's forest ecosystems. Explore the vital role forests play in maintaining planetary health and supporting biodiversity.</p>
+                <a href="index.html" class="back-button">← Back to Main Site</a>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            &copy; 2025 EcoSys360 - Forest Ecosystems. All rights reserved.
+        </div>
+    </footer>
+    
+    <!-- JavaScript -->
+    <script>
+        // Mobile Menu Toggle
+        const mobileMenu = document.querySelector('.mobile-menu');
+        const navLinks = document.querySelector('.nav-links');
+        
+        mobileMenu.addEventListener('click', () => {
+            mobileMenu.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+        
+        // Navbar Scroll Effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+        
+        // Card Animation on Scroll
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.card');
+            const galleryItems = document.querySelectorAll('.gallery-item');
+            
+            // Function to check if element is in viewport
+            function isInViewport(element) {
+                const rect = element.getBoundingClientRect();
+                return (
+                    rect.top <= (window.innerHeight || document.documentElement.clientHeight) * 0.85 &&
+                    rect.bottom >= 0
+                );
+            }
+            
+            // Function to handle scroll animation
+            function scrollAnimation() {
+                cards.forEach(card => {
+                    if (isInViewport(card) && !card.style.animationPlayState) {
+                        card.style.animationPlayState = 'running';
+                        card.style.opacity = '1';
+                    }
+                });
+                
+                galleryItems.forEach(item => {
+                    if (isInViewport(item) && !item.style.animationPlayState) {
+                        item.style.animationPlayState = 'running';
+                        item.style.opacity = '1';
+                    }
+                });
+            }
+            
+            // Initial check
+            scrollAnimation();
+            
+            // Check on scroll
+            window.addEventListener('scroll', scrollAnimation);
+        });
+        
+        // Form Validation
+        const contactForm = document.querySelector('.contact-form');
+        if (contactForm) {
+            contactForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                const nameInput = document.getElementById('name');
+                const emailInput = document.getElementById('email');
+                const messageInput = document.getElementById('message');
+                
+                let isValid = true;
+                
+                // Simple validation
+                if (nameInput.value.trim() === '') {
+                    nameInput.style.borderColor = '#ff4d4d';
+                    isValid = false;
+                } else {
+                    nameInput.style.borderColor = '#e0e6ec';
+                }
+                
+                if (emailInput.value.trim() === '' || !emailInput.value.includes('@')) {
+                    emailInput.style.borderColor = '#ff4d4d';
+                    isValid = false;
+                } else {
+                    emailInput.style.borderColor = '#e0e6ec';
+                }
+                
+                if (messageInput.value.trim() === '') {
+                    messageInput.style.borderColor = '#ff4d4d';
+                    isValid = false;
+                } else {
+                    messageInput.style.borderColor = '#e0e6ec';
+                }
+                
+                if (isValid) {
+                    // Here you would typically send the form data to a server
+                    // For demo purposes, we'll just clear the form and show an alert
+                    alert('Message sent successfully!');
+                    contactForm.reset();
+                }
+            });
+        }
+        
+        // Add smooth scroll for anchor links with offset for fixed navbar
+        const navbar = document.querySelector('.navbar');
+        document.querySelectorAll('.nav-links a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const targetId = this.getAttribute('href');
+                if (targetId === '#' || !document.querySelector(targetId)) return;
+                e.preventDefault();
+                const targetElement = document.querySelector(targetId);
+                const navbarHeight = navbar.offsetHeight;
+                const elementPosition = targetElement.getBoundingClientRect().top + window.pageYOffset;
+                const offsetPosition = elementPosition - navbarHeight;
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+                // Close mobile menu if open
+                if (navLinks.classList.contains('active')) {
+                    mobileMenu.classList.remove('active');
+                    navLinks.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

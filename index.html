@@ -1,0 +1,1416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoSys360 | Home</title>
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f8fafc;
+            color: #1e293b;
+            overflow-x: hidden;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        @keyframes wave {
+            0% { transform: translateX(0) translateZ(0) scaleY(1); }
+            50% { transform: translateX(-25%) translateZ(0) scaleY(0.8); }
+            100% { transform: translateX(-50%) translateZ(0) scaleY(1); }
+        }
+        
+        /* Navigation Bar */
+        .navbar {
+            background-color: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+            padding: 1rem 5%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar.scrolled {
+            padding: 0.5rem 5%;
+            background-color: rgba(255, 255, 255, 0.98);
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #0f172a;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo span {
+            color: #3b82f6;
+        }
+        
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            margin-right: 10px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            position: relative;
+            overflow: hidden;
+        }
+       
+        
+        .logo-icon::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 40%;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 2rem;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #2c4859;
+            font-weight: 500;
+            font-size: 1rem;
+            position: relative;
+            padding: 0.5rem 0;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: #4a90c0;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            color: #4a90c0;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .mobile-menu {
+            display: none;
+            cursor: pointer;
+        }
+        
+        /* Hero Section */
+        .hero {
+            /* Convert gradient to RGBA and add background image */
+            background: linear-gradient(135deg, rgba(248, 250, 252, 0.8) 0%, rgba(224, 242, 254, 0.8) 100%), url('images/nature.jpg'); /* Added background image and RGBA gradient overlay */
+            background-size: cover; /* Ensure background image covers the area */
+            background-repeat: no-repeat; /* Prevent background image from repeating */
+            padding: 10rem 5% 6rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            position: relative;
+            z-index: 1;
+            animation: fadeIn 1s ease-out;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            color: #0f172a;
+            line-height: 1.2;
+        }
+        
+        .hero p {
+            font-size: 1.25rem;
+            color: #475569;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+        }
+        
+        .wave-container {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 200%;
+            height: 100px;
+            overflow: hidden;
+        }
+        
+        .wave {
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" fill="%23ffffff" fill-opacity="1"></path></svg>') repeat-x;
+            background-size: 1200px 100px;
+            animation: wave 15s linear infinite;
+        }
+        
+        .wave.wave2 {
+            top: 10px;
+            opacity: 0.5;
+            animation: wave 10s linear infinite reverse;
+        }
+        
+        /* Cards Section */
+        .cards-section {
+            padding: 6rem 5%;
+            background-color: #ffffff;
+            position: relative;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #0f172a;
+            font-weight: 700;
+        }
+        
+        .section-subtitle {
+            text-align: center;
+            color: #64748b;
+            margin-bottom: 4rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+        
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 0.5rem;
+        }
+        
+        .card {
+            width: 100%;
+            background-color: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-img {
+            height: 220px;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .card-content {
+            padding: 1.5rem;
+        }
+        
+        .card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: #2c4859;
+        }
+        
+        .card p {
+            color: #5d7a8c;
+            line-height: 1.6;
+            margin-bottom: 1.2rem;
+        }
+        
+        .card-link {
+            display: inline-block;
+            color: #4a90c0;
+            font-weight: 600;
+            text-decoration: none;
+            position: relative;
+        }
+        
+        .card-link::after {
+            content: "→";
+            margin-left: 5px;
+            transition: transform 0.3s ease;
+        }
+        
+        .card-link:hover::after {
+            transform: translateX(5px);
+        }
+        
+        /* Gallery Section */
+        .gallery-section {
+            padding: 5rem 5%;
+            background-color: #f5f9fc;
+        }
+        
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .gallery-item {
+            height: 250px;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(44, 72, 89, 0.08);
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+        
+        .gallery-item:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .gallery-item:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        .gallery-item:nth-child(4) {
+            animation-delay: 0.6s;
+        }
+        
+        .gallery-img {
+            width: 100%;
+            height: 100%;
+            background-color: #e6f2f9;
+            background-image: linear-gradient(135deg, #4a90c0 0%, #2c4859 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .gallery-item:hover .gallery-img {
+            transform: scale(1.05);
+        }
+        
+        .gallery-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(44, 72, 89, 0.8) 0%, rgba(44, 72, 89, 0) 60%);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 1.5rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+        
+        .gallery-title {
+            color: white;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+        
+        .gallery-desc {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+        }
+        
+        /* Contact Section */
+        .contact-section {
+            padding: 5rem 5%;
+            background-color: #ffffff;
+            position: relative;
+        }
+        
+        .contact-container {
+            display: flex;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 0 auto;
+            gap: 3rem;
+        }
+        
+        .contact-info {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .contact-info h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: #2c4859;
+        }
+        
+        .contact-info p {
+            color: #5d7a8c;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.2rem;
+        }
+        
+        .contact-icon {
+            width: 40px;
+            height: 40px;
+            background-color: #e6f2f9;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            color: #4a90c0;
+        }
+        
+        .contact-text {
+            color: #5d7a8c;
+        }
+        
+        .contact-form {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #2c4859;
+            font-weight: 500;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid #e0e6ec;
+            border-radius: 8px;
+            background-color: #f9fbfd;
+            color: #2c4859;
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #4a90c0;
+            box-shadow: 0 0 0 3px rgba(74, 144, 192, 0.1);
+        }
+        
+        .form-textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        .form-button {
+            background: linear-gradient(135deg, #4a90c0, #377aa0);
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(74, 144, 192, 0.3);
+        }
+        
+        .form-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(74, 144, 192, 0.4);
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: #0f172a;
+            color: white;
+            padding: 5rem 5% 2rem;
+        }
+        
+        .footer-container {
+            display: flex;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 0 auto;
+            gap: 2rem;
+        }
+        
+        .footer-col {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .footer-col:first-child {
+            flex: 2;
+            min-width: 300px;
+        }
+        
+        .footer-logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .footer-logo span {
+            color: #3b82f6;
+        }
+        
+        .footer-desc {
+            color: #94a3b8;
+            margin-bottom: 2rem;
+            line-height: 1.7;
+            font-size: 1.1rem;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .social-link {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+        }
+
+        .communityCARD{
+            display: block;
+        }
+        
+        .social-link:hover {
+            background-color: #3b82f6;
+            transform: translateY(-3px);
+        }
+        
+        .footer-title {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: white;
+            position: relative;
+            padding-bottom: 0.8rem;
+        }
+        
+        .footer-title::after {
+            content: '';
+            position: absolute;
+            width: 50px;
+            height: 2px;
+            background-color: #4a90c0;
+            bottom: 0;
+            left: 0;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: #78b7dc;
+        }
+        
+        .footer-contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .footer-contact-icon {
+            margin-right: 0.8rem;
+            color: #78b7dc;
+            width: 20px;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 3rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+        }
+
+        .gallery-section a {
+            text-decoration: none;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 1024px) {
+            .cards-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .cards-container {
+                grid-template-columns: 1fr;
+                padding: 1rem 0;
+            }
+            
+            .card {
+                max-width: 400px;
+                margin: 0 auto;
+            }
+            
+            .navbar {
+                padding: 1rem 5%;
+            }
+            
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                right: -100%;
+                width: 70%;
+                height: calc(100vh - 70px);
+                background-color: white;
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 2rem;
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+                transition: right 0.3s ease;
+            }
+            
+            .nav-links.active {
+                right: 0;
+            }
+            
+            .nav-links li {
+                margin-left: 0;
+                margin-bottom: 1.5rem;
+                width: 100%;
+            }
+            
+            .nav-links a {
+                display: block;
+                font-size: 1.1rem;
+            }
+            
+            .mobile-menu {
+                display: block;
+            }
+            
+            .mobile-menu div {
+                width: 25px;
+                height: 3px;
+                background-color: #2c4859;
+                margin: 5px 0;
+                transition: all 0.3s ease;
+            }
+            
+            .mobile-menu.active div:nth-child(1) {
+                transform: rotate(-45deg) translate(-5px, 6px);
+            }
+            
+            .mobile-menu.active div:nth-child(2) {
+                opacity: 0;
+            }
+            
+            .mobile-menu.active div:nth-child(3) {
+                transform: rotate(45deg) translate(-5px, -6px);
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .wave-container {
+                height: 60px;
+            }
+            
+            .wave {
+                background-size: 1200px 60px;
+            }
+        }
+
+        /* Dropdown Menu Styles */
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: white;
+            min-width: 220px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 0.5rem 0;
+            margin-top: 0.5rem;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .dropdown-content a {
+            color: #2c4859;
+            padding: 0.8rem 1.5rem;
+            text-decoration: none;
+            display: block;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f8fafc;
+            color: #4a90c0;
+            padding-left: 2rem;
+        }
+
+        .dropdown-content a::after {
+            display: none;
+        }
+
+        /* .dropdown > a::after {
+            content: '▼';
+            font-size: 0.7rem;
+            margin-left: 5px;
+            vertical-align: middle;
+        } */
+
+        @media (max-width: 768px) {
+            .dropdown-content {
+                position: static;
+                box-shadow: none;
+                padding-left: 1rem;
+                margin-top: 0.5rem;
+                display: none;
+            }
+
+            .dropdown.active .dropdown-content {
+                display: block;
+            }
+
+            .dropdown-content a {
+                padding: 0.8rem 1rem;
+            }
+
+            .dropdown-content a:hover {
+                padding-left: 1.5rem;
+            }
+        }
+
+        /* About Us Section */
+        .about-us-section {
+            padding: 6rem 5%;
+            background-color: #ffffff;
+            position: relative;
+        }
+        
+        .about-us-container {
+            display: flex;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 0 auto;
+            gap: 3rem;
+        }
+        
+        .about-us-content {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .about-us-block {
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+        
+        .about-us-team {
+            flex: 1;
+            min-width: 300px;
+            text-align: center;
+        }
+        
+        .team-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <a href="#" class="logo">
+            <div class="logo-icon"></div>
+            Eco<span>Sys360</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="#">Home</a></li>
+            <li class="dropdown">
+                <a href="#">Ecosystems</a>
+                <div class="dropdown-content">
+                    <a href="ocean.html">Oceans & Marine Life</a>
+                    <a href="forest.html">Forests & Woodlands</a>
+                    <a href="wetland.html">Wetlands</a>
+                    <a href="corals.html">Coral Reefs</a>
+                    <a href="desert.html">Deserts</a>
+                </div>
+            </li>
+            <li class="dropdown">
+                <a href="#">Treats</a>
+                <div class="dropdown-content">
+                    <a href="climatechange.html">Climate Change</a>
+                    <a href="pollution.html">Pollution</a>
+                    <a href="deforestation.html">Deforestation</a>
+                    <a href="urban.html">Urbanization & Land Conversion</a>
+                </div>
+            </li>
+            <li class="dropdown">
+                <a href="#">Preservation</a>
+                <div class="dropdown-content">
+                    <a href="strategies.html">Conservation and Strategies</a>
+                    <a href="individualAction.html">Individual Actions</a>
+                    <a href="communityInitiatives.html">Community Initiatives</a>
+                </div>
+            </li>
+            <li class="dropdown">
+                <a href="#">Resources</a>
+                <div class="dropdown-content">
+                    <a href="resources.html">Infographics & PDFs</a>
+                    <a href="videos.html">Educational Videos/Animations</a>
+                    <a href="external.html">External Links</a>
+                </div>
+            </li>
+           
+            <li><a href="community.html">Community</a></li>
+            <li><a href="#about-us-section">About Us</a></li>
+            <li><a href="#contact-section">Contact</a></li>
+        </ul>
+        <div class="mobile-menu">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Discover Our Planet's <span style="color: #4a90c0;">Ecosystems</span></h1>
+            <p>Join us on a journey to explore, understand, and protect Earth's diverse ecosystems. Together, we can make a difference in preserving our planet's precious biodiversity for future generations.</p>
+            <a href="#" class="cta-button">Explore Ecosystems</a>
+        </div>
+
+    </section>
+    
+    <!-- Cards Section -->
+    <section class="cards-section">
+        <h2 class="section-title">Major Ecosystems</h2>
+        <p class="section-subtitle">Explore the diverse habitats that make up our planet's incredible web of life.</p>
+        
+        <div class="cards-container">
+            <div class="card">
+                <div class="card-img">
+                    <img src="images/Oceans.jpg" alt="Ocean Ecosystem">
+                </div>
+                <div class="card-content">
+                    <h3>Oceans & Marine Life</h3>
+                    <p>Covering 71% of Earth's surface, our oceans are home to millions of species and produce over half of the world's oxygen while regulating our climate.</p>
+                    <a href="ocean.html" class="card-link">Explore Oceans</a>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-img">
+                    <img src="images/Forests.jpg" alt="Forest Ecosystem">
+                </div>
+                <div class="card-content">
+                    <h3>Forests & Woodlands</h3>
+                    <p>From tropical rainforests to boreal conifer stands, forests are the lungs of our planet, providing habitat for countless species and sustaining biodiversity.</p>
+                    <a href="forest.html" class="card-link">Explore Forests</a>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-img">
+                    <img src="images/Wetlands.jpg" alt="Wetland Ecosystem">
+                </div>
+                <div class="card-content">
+                    <h3>Wetlands</h3>
+                    <p>These vital transition zones between land and water filter pollutants, prevent flooding, and provide crucial habitat for a wide variety of plant and animal species.</p>
+                    <a href="wetland.html" class="card-link">Explore Wetlands</a>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-img">
+                    <img src="images/Coral Reefs.jpg" alt="Coral Reef Ecosystem">
+                </div>
+                <div class="card-content">
+                    <h3>Coral Reefs</h3>
+                    <p>Coral reefs are vibrant underwater ecosystems teeming with marine life, supporting a quarter of all ocean species and protecting coastlines from erosion.</p>
+                    <a href="corals.html" class="card-link">Explore Corals</a>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-img">
+                    <img src="images/Desert.jpeg" alt="Desert Ecosystem">
+                </div>
+                <div class="card-content">
+                    <h3>Deserts</h3>
+                    <p>Deserts, though dry and harsh, are home to unique plants and animals adapted to extreme conditions, and play a crucial role in Earth's climate and biodiversity.</p>
+                    <a href="desert.html" class="card-link">Explore Deserts</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Threats Section -->
+    <section class="gallery-section">
+        <h2 class="section-title">Threats to Ecosystems</h2>
+        <p class="section-subtitle">Understanding the challenges our planet faces is the first step toward creating meaningful solutions.</p>
+        
+        <div class="gallery-grid">
+            <a href="climatechange.html" class="gallery-item">
+                <div class="gallery-img">Climate Change</div>
+            </a>
+            
+            <a href="pollution.html" class="gallery-item">
+                <div class="gallery-img">Pollution</div>
+                
+            </a>
+            
+            <a href="deforestation.html" class="gallery-item">
+                <div class="gallery-img">Deforestation</div>
+                
+            </a>
+            
+            <a href="urban.html" class="gallery-item">
+                <div class="gallery-img">Urbanization</div>
+            </a>
+        </div>
+    </section>
+    
+    <!-- Preservation Section -->
+    <section class="cards-section">
+        <h2 class="section-title">Preservation & Action</h2>
+        <p class="section-subtitle">Discover conservation strategies and ways you can contribute to protecting our planet's ecosystems.</p>
+        
+        <div class="cards-container">
+            <div class="card">
+                <div class="card-img">
+                    <img src="images/conservation.jpg">
+                </div>
+                <div class="card-content">
+                    <h3>Conservation Efforts</h3>
+                    <p>Learn about global initiatives, protected areas, and restoration projects that are making a difference in preserving biodiversity worldwide.</p>
+                    <a href="strategies.html" class="card-link">Get Involved</a>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-img">
+                    <img src="images/individual.jpg">
+                </div>
+                <div class="card-content">
+                    <h3>Individual Actions</h3>
+                    <p>Discover how small changes in your daily life can collectively create a significant positive impact on our environment and ecosystems.</p>
+                    <a href="individualAction.html" class="card-link">Take Action</a>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-img">
+                    <img src="images/communitytree.png">
+                </div>
+                <div class="card-content">
+                    <h3>Sustainable Practices</h3>
+                    <p>Explore sustainable alternatives in agriculture, energy, and manufacturing that help maintain the delicate balance of our ecosystems.</p>
+                    <a href="communityInitiatives.html" class="card-link">Learn More</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Resources Section -->
+    <section class="gallery-section">
+        <h2 class="section-title">Resources</h2>
+        <p class="section-subtitle">Access educational materials, infographics, and connections to organizations making a difference.</p>
+        
+        <div class="gallery-grid">
+            <a href="resources.html" class="gallery-item">
+                <div class="gallery-img">Infographic & PDFs</div>
+                
+            </a>
+            
+            <a href="videos.html" class="gallery-item">
+                <div class="gallery-img">Educational Videos</div>
+               
+            </a>
+            
+            <a href="external.html" class="gallery-item">
+                <div class="gallery-img">External Links</div>
+            
+            </a>        
+        </div>
+    </section>
+    
+    <!-- Community Section -->
+    <section class="cards-section" style="background-color: #f5f9fc;">
+        <!-- <h2 class="section-title">Community</h2>
+        <p class="section-subtitle">Join our growing community of eco-conscious individuals sharing stories, art, photos, and making eco-promises.</p> -->
+        
+        <div class="cards-container communityCARD">
+            <div class="card ">
+                <div class="card-img">
+                    <img src="images/commsdashe.jpg">
+                </div>
+                <div class="card-content">
+                    <h3>Community</h3>
+                    <p>Join our growing community of eco-conscious individuals sharing stories, art, photos, and making eco-promises.</p>
+                    <a href="community.html" class="card-link">Join Now</a>
+                </div>
+            </div>
+            
+        
+        </div>
+    </section>
+    
+    <!-- About Us Section -->
+    <section id="about-us-section" class="section-padding" style="background-color: #f5f9fc;">
+        <h2 class="section-title">About Us</h2>
+        <p class="section-subtitle">Learn about our mission, team, and commitment to ecosystem preservation and education.</p>
+        
+        <div class="about-us-container">
+            <div class="about-us-content">
+                <div class="about-us-block">
+                    <h3>Who We Are</h3>
+                    <p style="font-style: italic;">Ecosys360 is a passionate, student-led initiative committed to driving meaningful change for the environment. Founded by students who share a deep concern for the future of our ecosystems, we believe that young voices can spark powerful movements. Our group is made up of diverse individuals from various academic disciplines, united by one common goal: to raise awareness, inspire action, and advocate for sustainable solutions to the environmental challenges of our time. Through collaborative efforts, educational campaigns, and community involvement, we aim to be a catalyst for positive change—both locally and globally.</p>
+                </div>
+                
+                <div class="about-us-block">
+                    <h3>Mission Statement</h3>
+                    <p style="font-style: italic;">Our mission is to educate, empower, and connect individuals and communities who are passionate about protecting the natural world. We strive to foster environmental literacy, encourage responsible behaviors, and create opportunities for active engagement in conservation efforts. By building bridges between science, education, and grassroots action, we hope to inspire people of all ages to take ownership of their role in safeguarding ecosystems and promoting sustainable living practices.</p>
+                </div>
+                
+                <div class="about-us-block">
+                    <h3>Vision</h3>
+                    <p style="font-style: italic;">A world where ecosystems thrive and communities live in harmony with nature.</p>
+                </div>
+            </div>
+            
+            <div class="about-us-team">
+                <img src="images/Barrier Reefs.jpg" alt="Our Team" class="team-image">
+                <h3>Team & Contributors</h3>
+                <p>Our team includes environmental scientists, educators, conservation specialists, and passionate volunteers from around the world, all working together to protect and celebrate our planet's ecosystems.</p>
+                <a href="#" class="cta-button" style="margin-top: 1.5rem; display: inline-block;">Meet Our Team</a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Contact Section -->
+    <section class="contact-section" style="background-color: #f5f9fc;">
+        <h2 class="section-title">Contact & Feedback</h2>
+        <p class="section-subtitle">Have questions or want to get involved? Reach out to our team and we'll be happy to help.</p>
+        
+        <div class="contact-container">
+            <div class="contact-info">
+                <h3>Get In Touch</h3>
+                <p>We'd love to hear from you! Fill out the form or contact us using the information below.</p>
+                
+                <div class="contact-item">
+                    <div class="contact-icon">📍</div>
+                    <div class="contact-text">123 Conservation Way, Greenville, CA 90001</div>
+                </div>
+                
+                <div class="contact-item">
+                    <div class="contact-icon">📞</div>
+                    <div class="contact-text">+1 (555) 123-4567</div>
+                </div>
+                
+                <div class="contact-item">
+                    <div class="contact-icon">✉️</div>
+                    <div class="contact-text">info@ecosystem.org</div>
+                </div>
+            </div>
+            
+            <div class="contact-form">
+                <div class="form-group">
+                    <label class="form-label" for="name">Name</label>
+                    <input type="text" id="name" class="form-input" placeholder="Your name">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="email">Email</label>
+                    <input type="email" id="email" class="form-input" placeholder="Your email">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="feedback-type">Type of Feedback</label>
+                    <select id="feedback-type" class="form-input">
+                        <option value="">Select an option</option>
+                        <option value="question">General Question</option>
+                        <option value="volunteer">Volunteer Interest</option>
+                        <option value="suggestion">Suggestion</option>
+                        <option value="report">Report Issue</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="message">Message</label>
+                    <textarea id="message" class="form-input form-textarea" placeholder="Your message or feedback"></textarea>
+                </div>
+                
+                <button type="submit" class="form-button">Send Message</button>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-col">
+                <div class="footer-logo">Eco<span>Sys360</span></div>
+                <p class="footer-desc">Dedicated to raising awareness about Earth's biodiversity and empowering individuals to take meaningful action for ecosystem conservation.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link">f</a>
+                    <a href="#" class="social-link">t</a>
+                    <a href="#" class="social-link">in</a>
+                    <a href="#" class="social-link">ig</a>
+                </div>
+            </div>
+            
+            <div class="footer-col">
+                <h4 class="footer-title">Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Ecosystems</a></li>
+                    <li><a href="#">Threats</a></li>
+                    <li><a href="#">Preservation</a></li>
+                    <li><a href="#">Resources</a></li>
+                    <li><a href="community.html">Community</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-col">
+                <h4 class="footer-title">Resources</h4>
+                <ul class="footer-links">
+                    <li><a href="resources.html">Downloadable Guides</a></li>
+                    <li><a href="resources.html">Infographics</a></li>
+                    <li><a href="external.html">Conservation Partners</a></li>
+                    
+                </ul>
+            </div>
+            
+            <div class="footer-col">
+                <h4 class="footer-title">Contact Info</h4>
+                <div class="footer-contact-item">
+                    <span class="footer-contact-icon">📍</span>
+                    123 Conservation Way, Greenville, CA 90001
+                </div>
+                <div class="footer-contact-item">
+                    <span class="footer-contact-icon">📞</span>
+                    +1 (555) 123-4567
+                </div>
+                <div class="footer-contact-item">
+                    <span class="footer-contact-icon">✉️</span>
+                    info@ecosystem.org
+                </div>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            &copy; 2025 EcoSys360. All rights reserved.
+        </div>
+    </footer>
+    
+    <!-- JavaScript -->
+    <script>
+        // Mobile Menu Toggle
+        const mobileMenu = document.querySelector('.mobile-menu');
+        const navLinks = document.querySelector('.nav-links');
+        const dropdowns = document.querySelectorAll('.dropdown');
+        
+        mobileMenu.addEventListener('click', () => {
+            mobileMenu.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+        
+        // Handle dropdowns in mobile view
+        dropdowns.forEach(dropdown => {
+            const link = dropdown.querySelector('a');
+            link.addEventListener('click', (e) => {
+                if (window.innerWidth <= 768) {
+                    e.preventDefault();
+                    dropdown.classList.toggle('active');
+                }
+            });
+        });
+        
+        // Navbar Scroll Effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+        
+        // Card and Gallery Item Animation on Scroll
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.card');
+            const galleryItems = document.querySelectorAll('.gallery-item');
+            const aboutUsBlocks = document.querySelectorAll('.about-us-block, .about-us-team'); // Select About Us blocks
+            const contactElements = document.querySelectorAll('.contact-info, .contact-form'); // Select Contact elements
+            
+            // Function to check if element is in viewport
+            function isInViewport(element) {
+                const rect = element.getBoundingClientRect();
+                return (
+                    rect.top <= (window.innerHeight || document.documentElement.clientHeight) * 0.85 &&
+                    rect.bottom >= 0
+                );
+            }
+            
+            // Function to handle scroll animation
+            function scrollAnimation() {
+                cards.forEach(card => {
+                    if (isInViewport(card)) {
+                        card.style.animationPlayState = 'running';
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }
+                });
+                
+                galleryItems.forEach(item => {
+                    if (isInViewport(item)) {
+                        item.style.animationPlayState = 'running';
+                        item.style.opacity = '1';
+                        item.style.transform = 'translateY(0)';
+                    }
+                });
+
+                // Animate About Us blocks
+                aboutUsBlocks.forEach(block => {
+                    if (isInViewport(block)) {
+                        block.style.animationPlayState = 'running';
+                        block.style.opacity = '1';
+                        block.style.transform = 'translateY(0)';
+                    }
+                });
+
+                // Animate Contact elements
+                contactElements.forEach(element => {
+                    if (isInViewport(element)) {
+                        element.style.animationPlayState = 'running';
+                        element.style.opacity = '1';
+                        element.style.transform = 'translateY(0)';
+                    }
+                });
+            }
+            
+            // Initial check
+            scrollAnimation();
+            
+            // Check on scroll
+            window.addEventListener('scroll', scrollAnimation);
+        });
+        
+        // Form Validation
+        const contactForm = document.querySelector('.contact-form');
+        if (contactForm) {
+            contactForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                const nameInput = document.getElementById('name');
+                const emailInput = document.getElementById('email');
+                const messageInput = document.getElementById('message');
+                
+                let isValid = true;
+                
+                // Simple validation
+                if (nameInput.value.trim() === '') {
+                    nameInput.style.borderColor = '#ff4d4d';
+                    isValid = false;
+                } else {
+                    nameInput.style.borderColor = '#e0e6ec';
+                }
+                
+                if (emailInput.value.trim() === '' || !emailInput.value.includes('@')) {
+                    emailInput.style.borderColor = '#ff4d4d';
+                    isValid = false;
+                } else {
+                    emailInput.style.borderColor = '#e0e6ec';
+                }
+                
+                if (messageInput.value.trim() === '') {
+                    messageInput.style.borderColor = '#ff4d4d';
+                    isValid = false;
+                } else {
+                    messageInput.style.borderColor = '#e0e6ec';
+                }
+                
+                if (isValid) {
+                    // Here you would typically send the form data to a server
+                    // For demo purposes, we'll just clear the form and show an alert
+                    alert('Message sent successfully!');
+                    contactForm.reset();
+                }
+            });
+        }
+        
+        // Add smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    
+                    // Close mobile menu if open
+                    if (navLinks.classList.contains('active')) {
+                        mobileMenu.classList.remove('active');
+                        navLinks.classList.remove('active');
+                    }
+                }
+            });
+        });
+
+        // Auto-scroll to section on page load if URL has a hash
+        document.addEventListener('DOMContentLoaded', () => {
+            const hash = window.location.hash;
+            if (hash) {
+                const targetElement = document.querySelector(hash);
+                if (targetElement) {
+                    // Use a slight delay to ensure all elements are rendered
+                    setTimeout(() => {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }, 100);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

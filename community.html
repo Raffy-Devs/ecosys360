@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+  
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community | EcoSystem</title>
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f9fc;
+            color: #2c4859;
+            line-height: 1.6;
+        }
+        
+        /* Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        /* Navigation Bar */
+        .navbar {
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 10px rgba(44, 72, 89, 0.1);
+            padding: 1rem 5%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #2c4859;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo span {
+            color: #4a90c0;
+        }
+        
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            margin-right: 10px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4a90c0, #2c4859);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .logo-icon::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 40%;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+        }
+        
+        
+
+	.nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 1.5rem;
+        }
+
+        .navbar ul{
+            padding-left: 225px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #2c4859;
+            font-weight: 500;
+            font-size: 1rem;
+            position: relative;
+            padding: 0.2rem 2.5;
+            transition: color 1s ease 
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: #4a90c0;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            color: #4a90c0;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        /* Dropdown Menu Styles */
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: white;
+            min-width: 220px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 0.5rem 0;
+            margin-top: 1px;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .dropdown-content a {
+            color: #2c4859;
+            padding: 0.8rem 1.5rem;
+            text-decoration: none;
+            display: block;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f8fafc;
+            color: #4a90c0;
+            padding-left: 2rem;
+        }
+
+        .dropdown-content a::after {
+            display: none;
+        }
+        
+        /* Header Section */
+        .page-header {
+            background: linear-gradient(135deg, #2c4859 0%, #4a90c0 100%);
+            padding: 8rem 5% 4rem;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .page-header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" fill="rgba(255,255,255,0.1)"></path></svg>') repeat-x;
+            background-size: 1200px 120px;
+            opacity: 0.3;
+        }
+        
+        .page-header-content {
+            position: relative;
+            z-index: 1;
+            animation: fadeInUp 1s ease-out;
+        }
+        
+        .page-header h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        
+        .page-header p {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* Main Content */
+        .main-content {
+            padding: 4rem 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* Community Section */
+        .community-section {
+            margin-bottom: 4rem;
+            animation: fadeInUp 0.8s ease-out;
+        }
+        
+        .community-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .community-title {
+            font-size: 2.5rem;
+            color: #2c4859;
+            margin-bottom: 1rem;
+        }
+        
+        .community-subtitle {
+            font-size: 1.2rem;
+            color: #5d7a8c;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* Community Cards */
+        .community-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .community-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(44, 72, 89, 0.1);
+            transition: all 0.3s ease;
+            animation: slideInLeft 0.8s ease-out;
+        }
+        
+        .community-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(44, 72, 89, 0.15);
+        }
+        
+        .card-header {
+            background: linear-gradient(135deg, #4a90c0, #377aa0);
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+        }
+        
+        .card-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 2.5rem;
+            animation: pulse 2s infinite;
+        }
+        
+        .card-title {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin: 0;
+        }
+        
+        .card-content {
+            padding: 2rem;
+        }
+        
+        /* Featured Warriors */
+        .warrior-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .warrior-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(44, 72, 89, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .warrior-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+        
+        .warrior-info {
+            padding: 1.5rem;
+        }
+        
+        .warrior-name {
+            font-size: 1.4rem;
+            color: #2c4859;
+            margin-bottom: 0.5rem;
+        }
+        
+        .warrior-location {
+            color: #4a90c0;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        
+        .warrior-description {
+            color: #5d7a8c;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        
+        /* Eco Promise Wall */
+        .promise-wall {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-top: 3rem;
+            box-shadow: 0 8px 25px rgba(44, 72, 89, 0.1);
+        }
+        
+        .promise-form {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .promise-input {
+            flex: 1;
+            padding: 1rem;
+            border: 2px solid #e0e6ec;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .promise-input:focus {
+            border-color: #4a90c0;
+            outline: none;
+        }
+        
+        .promise-button {
+            background: #4a90c0;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .promise-button:hover {
+            background: #377aa0;
+            transform: translateY(-2px);
+        }
+        
+        .promises-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .promise-card {
+            background: #f8fbff;
+            border-radius: 12px;
+            padding: 1.5rem;
+            border-left: 4px solid #4a90c0;
+        }
+        
+        .promise-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #4a90c0;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .promise-text {
+            color: #2c4859;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: #2c4859;
+            color: white;
+            padding: 3rem 5% 1rem;
+            text-align: center;
+            margin-top: 4rem;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: #78b7dc;
+        }
+        
+        .copyright {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 1rem;
+        }
+        
+       /* Responsive Design */
+       @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .page-header p {
+                font-size: 1.1rem;
+            }
+            
+            .conservation-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .steps-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .main-content {
+                padding: 2rem 5%;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .dropdown-content {
+                position: static;
+                box-shadow: none;
+                padding-left: 1rem;
+                margin-top: 0.5rem;
+                display: none;
+            }
+
+            .dropdown.active .dropdown-content {
+                display: block;
+            }
+
+            .dropdown-content a {
+                padding: 0.8rem 1rem;
+            }
+
+            .dropdown-content a:hover {
+                padding-left: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body id="artifacts-component-root-html">
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <div class="logo-icon"></div>
+            Eco<span>Sys360</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li class="dropdown">
+                <a href="#">Ecosystems</a>
+                <div class="dropdown-content">
+                    <a href="ocean.html">Oceans & Marine Life</a>
+                    <a href="forest.html">Forests & Woodlands</a>
+                    <a href="wetland.html">Wetlands</a>
+                    <a href="corals.html">Coral Reefs</a>
+                    <a href="desert.html">Deserts</a>
+                </div>
+            </li>
+            <li class="dropdown">
+                <a href="#">Threats</a>
+                <div class="dropdown-content">
+                    <a href="climatechange.html">Climate Change</a>
+                    <a href="pollution.html">Pollution</a>
+                    <a href="deforestation.html">Deforestation</a>
+                    <a href="urban.html">Urbanization & Land Conversion</a>
+                </div>
+            </li>
+            <li class="dropdown">
+                <a href="#">Preservation</a>
+                <div class="dropdown-content">
+                    <a href="strategies.html">Conservation and Strategies</a>
+                    <a href="individualAction.html">Individual Actions</a>
+                    <a href="communityInitiatives.html">Community Initiatives</a>
+                </div>
+            </li>
+            <li class="dropdown">
+                <a href="#">Resources</a>
+                <div class="dropdown-content">
+                    <a href="resources.html">Infographics & PDFs</a>
+                    <a href="videos.html">Educational Videos/Animations</a>
+                    <a href="external.html">External Links</a>
+                </div>
+            </li>
+            <li><a href="community.html">Community</a></li>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+        <div class="mobile-menu">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </nav>
+    
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="page-header-content">
+            <h1>Community</h1>
+            <p>Join our growing community of eco-warriors, share your stories, and make promises for a sustainable future.</p>
+        </div>
+    </section>
+    
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Voice for the Planet -->
+        <section class="community-section">
+            <div class="community-header">
+                <h2 class="community-title">Voice for the Planet</h2>
+                <p class="community-subtitle">Share your eco-stories, experiences, photos, and art with our community</p>
+            </div>
+            
+            <div class="community-grid">
+                <div class="community-card">
+                    <div class="card-header">
+                        <div class="card-icon">📸</div>
+                        <h3 class="card-title">Photo Gallery</h3>
+                    </div>
+                    <div class="card-content">
+                        <p>Share your environmental photography and artwork. Show us your local ecosystem, conservation efforts, or creative expressions of nature.</p>
+                        <button class="promise-button" style="margin-top: 1rem;">Submit Photos</button>
+                    </div>
+                </div>
+                
+                <div class="community-card">
+                    <div class="card-header">
+                        <div class="card-icon">📝</div>
+                        <h3 class="card-title">Eco Stories</h3>
+                    </div>
+                    <div class="card-content">
+                        <p>Share your experiences, challenges, and successes in environmental conservation. Your story could inspire others to take action.</p>
+                        <button class="promise-button" style="margin-top: 1rem;">Share Story</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Featured Eco Warriors -->
+        <section class="community-section">
+            <div class="community-header">
+                <h2 class="community-title">Featured Eco Warriors</h2>
+                <p class="community-subtitle">Meet the inspiring young activists making a difference in their communities</p>
+            </div>
+            
+            <div class="warrior-grid">
+                <div class="warrior-card">
+                    <img src="images/rico.JPG" alt="Rocco Da Silva" class="warrior-image">
+                    <div class="warrior-info">
+                        <h3 class="warrior-name">Rocco Da Silva</h3>
+                        <p class="warrior-location">Cape Town, South Africa</p>
+                        <p class="warrior-description">11-year-old eco-activist who founded The Future Kids, organizing beach clean-ups and educating children about pollution. Winner of the PETCO Waste Reduction Youth Warrior award in 2019.</p>
+                    </div>
+                </div>
+                
+                <div class="warrior-card">
+                    <img src="images/yola.JPG" alt="Yola Mgogwana" class="warrior-image">
+                    <div class="warrior-info">
+                        <h3 class="warrior-name">Yola Mgogwana</h3>
+                        <p class="warrior-location">Khayelitsha, South Africa</p>
+                        <p class="warrior-description">14-year-old activist educating her community about climate change and the importance of taking action. A powerful voice for climate justice in South Africa.</p>
+                    </div>
+                </div>
+                
+                <div class="warrior-card">
+                    <img src="images/Ayakha.JPG" alt="Ayakha Melithafa" class="warrior-image">
+                    <div class="warrior-info">
+                        <h3 class="warrior-name">Ayakha Melithafa</h3>
+                        <p class="warrior-location">Cape Town, South Africa</p>
+                        <p class="warrior-description">20-year-old environmental activist breaking stereotypes in eco-activism. Inspired by the 2017 Cape Town drought to research climate change and take action.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Eco Promise Wall -->
+        <section class="community-section">
+            <div class="community-header">
+                <h2 class="community-title">Eco Promise Wall</h2>
+                <p class="community-subtitle">Make a promise for the planet and join others in taking action</p>
+            </div>
+            
+            <div class="promise-wall">
+                <form class="promise-form">
+                    <input type="text" class="promise-input" placeholder="I promise to...">
+                    <button type="submit" class="promise-button">Make Promise</button>
+                </form>
+                
+                <div class="promises-grid">
+                    <div class="promise-card">
+                        <div class="promise-avatar">JD</div>
+                        <p class="promise-text">I promise to use less plastic and bring my own reusable bags to the store.</p>
+                    </div>
+                    
+                    <div class="promise-card">
+                        <div class="promise-avatar">MS</div>
+                        <p class="promise-text">I promise to plant one tree every month in my community.</p>
+                    </div>
+                    
+                    <div class="promise-card">
+                        <div class="promise-avatar">RK</div>
+                        <p class="promise-text">I promise to reduce my carbon footprint by using public transportation more often.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="index.html">Home</a>
+            <a href="#">Ecosystems</a>
+            <a href="#">Threats</a>
+            <a href="#">Resources</a>
+            <a href="#">Community</a>
+            <a href="#">About</a>
+            <a href="#">Contact</a>
+        </div>
+        <div class="copyright">
+            © 2025 EcoSystem. All rights reserved. | Photo credits: Greenpop, The Future Kids Club, Giraffe.org
+        </div>
+    </footer>
+    
+    <!-- JavaScript -->
+    <script>
+    // Navbar scroll effect
+    window.addEventListener('scroll', () => {
+        const navbar = document.querySelector('.navbar');
+        if (!navbar) return;
+        if (window.scrollY > 50) {
+            navbar.style.backgroundColor = 'rgba(255, 255, 255, 0.98)';
+            navbar.style.padding = '0.5rem 5%';
+        } else {
+            navbar.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
+            navbar.style.padding = '1rem 5%';
+        }
+    });
+
+    // Intersection Observer for animations
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -100px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    // Observe all cards and sections
+    document.addEventListener('DOMContentLoaded', () => {
+        const animatedElements = document.querySelectorAll('.community-card, .warrior-card, .community-section');
+        animatedElements.forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+    });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ocean Ecosystems | EcoSys360</title>
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #eaf6fb;
+            color: #184a6a;
+            overflow-x: hidden;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        @keyframes wave {
+            0% { transform: translateX(0) translateZ(0) scaleY(1); }
+            50% { transform: translateX(-25%) translateZ(0) scaleY(0.8); }
+            100% { transform: translateX(-50%) translateZ(0) scaleY(1); }
+        }
+        
+        @keyframes bubbleFloat {
+            0% { transform: translateY(0px) scale(1); }
+            33% { transform: translateY(-8px) scale(1.05); }
+            66% { transform: translateY(-12px) scale(0.97); }
+            100% { transform: translateY(0px) scale(1); }
+        }
+        
+        /* Navigation Bar */
+        .navbar {
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 10px rgba(24, 74, 106, 0.08);
+            padding: 1rem 5%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar.scrolled {
+            padding: 0.5rem 5%;
+            background-color: rgba(255, 255, 255, 0.98);
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #184a6a;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo span {
+            color: #00b4d8;
+        }
+        
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            margin-right: 10px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00b4d8, #0077b6);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .logo-icon::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 40%;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 2rem;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #184a6a;
+            font-weight: 500;
+            font-size: 1rem;
+            position: relative;
+            padding: 0.5rem 0;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: #00b4d8;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            color: #00b4d8;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .mobile-menu {
+            display: none;
+            cursor: pointer;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, rgba(0, 180, 216, 0.9), rgba(0, 119, 182, 0.8)), url('images/Oceans.jpg');
+            background-size: cover;
+            background-position: center;
+            padding: 10rem 5% 6rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            color: white;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            position: relative;
+            z-index: 1;
+            animation: fadeIn 1s ease-out;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            color: white;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+        
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .stat-item {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #90e0ef;
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #00b4d8, #0077b6);
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 180, 216, 0.3);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 180, 216, 0.4);
+        }
+        
+        /* Ocean Zones Section */
+        .ocean-zones {
+            padding: 5rem 5%;
+            background-color: #ffffff;
+            position: relative;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #184a6a;
+        }
+        
+        .section-subtitle {
+            text-align: center;
+            color: #468faf;
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            font-size: 1.1rem;
+        }
+        
+        .zone-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .zone-card {
+            background-color: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(24, 74, 106, 0.08);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+        .zone-card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        .zone-card:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        .zone-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(24, 74, 106, 0.13);
+        }
+        .zone-image {
+            height: 250px;
+            position: relative;
+            overflow: hidden;
+        }
+        .coastal-bg {
+            background: linear-gradient(135deg, #00b4d8, #90e0ef);
+            background-image: url('images/Coastal.png');
+        }
+        .openocean-bg {
+            background: linear-gradient(135deg, #0077b6, #48cae4);
+            background-image: url('images/Pelagic\ Zone.jpg');
+        }
+        .deepsea-bg {
+            background: linear-gradient(135deg, #03045e, #023e8a);
+            background-image: url('images/Deep\ Sea.jpeg');
+        }
+        .zone-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 4rem;
+            animation: bubbleFloat 4s ease-in-out infinite;
+        }
+        .zone-card:nth-child(2) .zone-icon {
+            animation-delay: 1s;
+        }
+        .zone-card:nth-child(3) .zone-icon {
+            animation-delay: 2s;
+        }
+        .zone-content {
+            padding: 2rem;
+        }
+        .zone-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #184a6a;
+        }
+        .zone-facts {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+        .zone-facts li {
+            margin-bottom: 0.8rem;
+            color: #468faf;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+        .zone-facts li::before {
+            content: "🌊";
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+        /* Key Facts Section */
+        .key-facts {
+            padding: 5rem 5%;
+            background: linear-gradient(135deg, #e0f7fa, #caf0f8);
+            position: relative;
+        }
+        .facts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .fact-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0, 180, 216, 0.08);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+        .fact-card:nth-child(2) { animation-delay: 0.2s; }
+        .fact-card:nth-child(3) { animation-delay: 0.4s; }
+        .fact-card:nth-child(4) { animation-delay: 0.6s; }
+        .fact-card:nth-child(5) { animation-delay: 0.8s; }
+        .fact-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 180, 216, 0.13);
+        }
+        .fact-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+        .fact-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #00b4d8;
+            margin-bottom: 0.5rem;
+        }
+        .fact-label {
+            color: #184a6a;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        .fact-description {
+            color: #468faf;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        /* Purpose Section */
+        .purpose-section {
+            padding: 5rem 5%;
+            background-color: #ffffff;
+        }
+        .purpose-content {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .purpose-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #468faf;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+        .purpose-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        .purpose-card {
+            background: linear-gradient(135deg, rgba(0, 180, 216, 0.05), rgba(0, 119, 182, 0.02));
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid rgba(0, 180, 216, 0.1);
+            transition: all 0.3s ease;
+        }
+        .purpose-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 180, 216, 0.1);
+        }
+        .purpose-card h4 {
+            color: #00b4d8;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+        .purpose-card p {
+            color: #468faf;
+            line-height: 1.6;
+        }
+        /* Footer */
+        .footer {
+            background-color: #184a6a;
+            color: white;
+            padding: 4rem 5% 2rem;
+        }
+        .footer-container {
+            display: flex;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 0 auto;
+            gap: 2rem;
+        }
+        .footer-col {
+            flex: 1;
+            min-width: 200px;
+        }
+        .footer-col:first-child {
+            flex: 2;
+            min-width: 300px;
+        }
+        .footer-logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        .footer-logo span {
+            color: #90e0ef;
+        }
+        .footer-desc {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+        .back-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #00b4d8, #0077b6);
+            color: white;
+            padding: 0.6rem 1.5rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin-bottom: 1rem;
+        }
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 180, 216, 0.3);
+        }
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 3rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+        }
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem 5%;
+            }
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            .hero-stats {
+                gap: 1.5rem;
+            }
+            .zone-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            .facts-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
+            .purpose-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+     /* Dropdown Menu Styles */
+     .dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: white;
+            min-width: 220px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 0.5rem 0;
+            margin-top: 0.5rem;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .dropdown-content a {
+            color: #2c4859;
+            padding: 0.8rem 1.5rem;
+            text-decoration: none;
+            display: block;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f8fafc;
+            color: #4a90c0;
+            padding-left: 2rem;
+        }
+
+        .dropdown-content a::after {
+            display: none;
+        }
+
+        /* .dropdown > a::after {
+            content: '▼';
+            font-size: 0.7rem;
+            margin-left: 5px;
+            vertical-align: middle;
+        } */
+
+        @media (max-width: 768px) {
+            .dropdown-content {
+                position: static;
+                box-shadow: none;
+                padding-left: 1rem;
+                margin-top: 0.5rem;
+                display: none;
+            }
+
+            .dropdown.active .dropdown-content {
+                display: block;
+            }
+
+            .dropdown-content a {
+                padding: 0.8rem 1rem;
+            }
+
+            .dropdown-content a:hover {
+                padding-left: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <a href="#" class="logo">
+            <div class="logo-icon"></div>
+            Eco<span>Sys360</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li class="dropdown">
+                <a href="#">Ecosystems</a>
+                <div class="dropdown-content">
+                    <a href="ocean.html">Oceans & Marine Life</a>
+                    <a href="forest.html">Forests & Woodlands</a>
+                    <a href="wetland.html">Wetlands</a>
+                    <a href="corals.html">Coral Reefs</a>
+                    <a href="desert.html">Deserts</a>
+                </div>
+            </li>
+            <li class="dropdown">
+                <a href="#">Treats</a>
+                <div class="dropdown-content">
+                    <a href="climatechange.html">Climate Change</a>
+                    <a href="pollution.html">Pollution</a>
+                    <a href="deforestation.html">Deforestation</a>
+                    <a href="urban.html">Urbanization & Land Conversion</a>
+                </div>
+            </li>
+            <li class="dropdown">
+                <a href="#">Preservation</a>
+                <div class="dropdown-content">
+                    <a href="strategies.html">Conservation and Strategies</a>
+                    <a href="individualAction.html">Individual Actions</a>
+                    <a href="communityInitiatives.html">Community Initiatives</a>
+                </div>
+            </li>
+            <li class="dropdown">
+                <a href="#">Resources</a>
+                <div class="dropdown-content">
+                    <a href="resources.html">Infographics & PDFs</a>
+                    <a href="videos.html">Educational Videos/Animations</a>
+                    <a href="external.html">External Links</a>
+                </div>
+            </li>
+           
+            <li><a href="community.html">Community</a></li>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+        <div class="mobile-menu">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section class="hero" id="overview">
+        <div class="hero-content">
+            <h1>Ocean <span style="color: #90e0ef;">Ecosystems</span></h1>
+            <p>Oceans are the largest and most dynamic ecosystems on Earth, covering about 71% of the planet's surface and holding 97% of its water. They are essential for life, influencing weather patterns, regulating global temperatures, and producing more than 50% of the Earth's oxygen. Oceans also provide habitat for countless marine species and support the livelihoods of billions of people worldwide.</p>
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <span class="stat-number">71%</span>
+                    <span class="stat-label">of Earth's Surface</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">97%</span>
+                    <span class="stat-label">of Earth's Water</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">50%+</span>
+                    <span class="stat-label">Oxygen Produced</span>
+                </div>
+            </div>
+            <a href="#zones" class="cta-button">Explore Ocean Zones</a>
+        </div>
+    </section>
+    
+    <!-- Ocean Zones Section -->
+    <section class="ocean-zones" id="zones">
+        <h2 class="section-title">Types of Ocean Zones</h2>
+        <p class="section-subtitle">Explore the major ocean zones that shape our planet's marine ecosystems, each with unique characteristics and vital ecological roles.</p>
+        <div class="zone-grid">
+            <div class="zone-card">
+                <div class="zone-image coastal-bg"></div>
+                <div class="zone-content">
+                    <h3>Coastal Zones</h3>
+                    <ul class="zone-facts">
+                        <li>Shallow regions near land including estuaries, mangroves, and coral reefs.</li>
+                        <li>Highly productive areas rich in nutrients and biodiversity.</li>
+                        <li>Support fisheries and serve as nurseries for many marine species.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="zone-card">
+                <div class="zone-image openocean-bg"></div>
+                <div class="zone-content">
+                    <h3>Open Ocean (Pelagic Zone)</h3>
+                    <ul class="zone-facts">
+                        <li>Deep waters away from the coast, home to whales, sharks, tuna, and plankton.</li>
+                        <li>Plays a key role in carbon cycling and global heat distribution.</li>
+                        <li>Encompasses the largest habitat on Earth by volume.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="zone-card">
+                <div class="zone-image deepsea-bg"></div>
+                <div class="zone-content">
+                    <h3>Deep Sea (Abyssal and Hadal Zones)</h3>
+                    <ul class="zone-facts">
+                        <li>Located at depths beyond 4,000 meters, with extreme pressure and low temperatures.</li>
+                        <li>Inhabited by unique organisms adapted to darkness and isolation.</li>
+                        <li>Still largely unexplored and a frontier for scientific discovery.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Key Facts Section -->
+    <section class="key-facts" id="facts">
+        <h2 class="section-title">Key Facts & Significance</h2>
+        <p class="section-subtitle">Understanding the critical role oceans play in maintaining our planet's health and supporting life on Earth.</p>
+        <div class="facts-grid">
+            <div class="fact-card">
+                <span class="fact-icon">🌊</span>
+                <div class="fact-number">361M km²</div>
+                <div class="fact-label">Ocean Area</div>
+                <p class="fact-description">Oceans span an immense 361 million square kilometers, making them the largest ecosystem on Earth.</p>
+            </div>
+            <div class="fact-card">
+                <span class="fact-icon">🐠</span>
+                <div class="fact-number">230,000+</div>
+                <div class="fact-label">Known Marine Species</div>
+                <p class="fact-description">Oceans are home to approximately 230,000 known marine species, with millions more likely undiscovered.</p>
+            </div>
+            <div class="fact-card">
+                <span class="fact-icon">🍃</span>
+                <div class="fact-number">50%+</div>
+                <div class="fact-label">Oxygen Produced</div>
+                <p class="fact-description">Marine phytoplankton generate over 50% of the planet's oxygen, sustaining life far beyond the sea.</p>
+            </div>
+            <div class="fact-card">
+                <span class="fact-icon">🌡️</span>
+                <div class="fact-number">90%</div>
+                <div class="fact-label">Excess Heat Absorbed</div>
+                <p class="fact-description">Oceans absorb around 90% of the excess heat produced by greenhouse gas emissions, helping regulate global temperatures.</p>
+            </div>
+            <div class="fact-card">
+                <span class="fact-icon">💰</span>
+                <div class="fact-number">$2.5T+</div>
+                <div class="fact-label">Annual Economic Value</div>
+                <p class="fact-description">Oceans contribute more than $2.5 trillion annually through industries such as fishing, tourism, shipping, and marine biotechnology.</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Purpose Section -->
+    <section class="purpose-section" id="purpose">
+        <div class="purpose-content">
+            <h2 class="section-title">Purpose of Ocean Ecosystems</h2>
+            <p class="purpose-text">Ocean ecosystems serve as the planet's climate regulators, absorbing heat and storing vast amounts of carbon dioxide to mitigate global warming. They are the cradle of marine biodiversity, supporting intricate food webs from microscopic plankton to massive whales. Oceans are a critical source of food, energy, and livelihoods for over 3 billion people, especially in coastal regions. Additionally, they influence global weather systems, drive the water cycle through evaporation, and are vital in sustaining Earth's overall environmental balance. Culturally and spiritually, oceans hold deep meaning for many coastal and island communities, shaping identities and traditions that have endured for centuries.</p>
+            <div class="purpose-grid">
+                <div class="purpose-card">
+                    <h4>🌡️ Climate Regulation</h4>
+                    <p>Absorbing heat and storing carbon dioxide, oceans help mitigate global warming and regulate the planet's climate.</p>
+                </div>
+                <div class="purpose-card">
+                    <h4>🐋 Biodiversity Support</h4>
+                    <p>Providing habitat for a vast array of marine life, from plankton to whales, supporting complex food webs and biodiversity.</p>
+                </div>
+                <div class="purpose-card">
+                    <h4>⚓ Economic & Food Resource</h4>
+                    <p>Supplying food, energy, and livelihoods for billions, and supporting global industries such as fishing, tourism, and shipping.</p>
+                </div>
+                <div class="purpose-card">
+                    <h4>🌏 Cultural & Spiritual Value</h4>
+                    <p>Oceans hold deep cultural and spiritual significance for many communities, shaping identities and traditions worldwide.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-col">
+                <div class="footer-logo">Ocean<span>Hub</span></div>
+                <p class="footer-desc">Dedicated to understanding and protecting Earth's ocean ecosystems. Explore the vital role oceans play in maintaining planetary health and supporting biodiversity.</p>
+                <a href="index.html" class="back-button">← Back to Main Site</a>
+            </div>
+        </div>
+        <div class="copyright">
+            &copy; 2025 EcoSys360 - Ocean Ecosystems. All rights reserved.
+        </div>
+    </footer>
+    <!-- JavaScript -->
+    <script>
+        // Mobile Menu Toggle
+        const mobileMenu = document.querySelector('.mobile-menu');
+        const navLinks = document.querySelector('.nav-links');
+        mobileMenu.addEventListener('click', () => {
+            mobileMenu.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+        // Navbar Scroll Effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+        // Card Animation on Scroll
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.card');
+            const galleryItems = document.querySelectorAll('.gallery-item');
+            // Function to check if element is in viewport
+            function isInViewport(element) {
+                const rect = element.getBoundingClientRect();
+                return (
+                    rect.top <= (window.innerHeight || document.documentElement.clientHeight) * 0.85 &&
+                    rect.bottom >= 0
+                );
+            }
+            // Function to handle scroll animation
+            function scrollAnimation() {
+                cards.forEach(card => {
+                    if (isInViewport(card) && !card.style.animationPlayState) {
+                        card.style.animationPlayState = 'running';
+                        card.style.opacity = '1';
+                    }
+                });
+                galleryItems.forEach(item => {
+                    if (isInViewport(item) && !item.style.animationPlayState) {
+                        item.style.animationPlayState = 'running';
+                        item.style.opacity = '1';
+                    }
+                });
+            }
+            // Initial check
+            scrollAnimation();
+            // Check on scroll
+            window.addEventListener('scroll', scrollAnimation);
+        });
+        // Form Validation
+        const contactForm = document.querySelector('.contact-form');
+        if (contactForm) {
+            contactForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const nameInput = document.getElementById('name');
+                const emailInput = document.getElementById('email');
+                const messageInput = document.getElementById('message');
+                let isValid = true;
+                // Simple validation
+                if (nameInput.value.trim() === '') {
+                    nameInput.style.borderColor = '#ff4d4d';
+                    isValid = false;
+                } else {
+                    nameInput.style.borderColor = '#e0e6ec';
+                }
+                if (emailInput.value.trim() === '' || !emailInput.value.includes('@')) {
+                    emailInput.style.borderColor = '#ff4d4d';
+                    isValid = false;
+                } else {
+                    emailInput.style.borderColor = '#e0e6ec';
+                }
+                if (messageInput.value.trim() === '') {
+                    messageInput.style.borderColor = '#ff4d4d';
+                    isValid = false;
+                } else {
+                    messageInput.style.borderColor = '#e0e6ec';
+                }
+                if (isValid) {
+                    alert('Message sent successfully!');
+                    contactForm.reset();
+                }
+            });
+        }
+        // Add smooth scroll for anchor links with offset for fixed navbar
+        const navbar = document.querySelector('.navbar');
+        document.querySelectorAll('.nav-links a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const targetId = this.getAttribute('href');
+                if (targetId === '#' || !document.querySelector(targetId)) return;
+                e.preventDefault();
+                const targetElement = document.querySelector(targetId);
+                const navbarHeight = navbar.offsetHeight;
+                const elementPosition = targetElement.getBoundingClientRect().top + window.pageYOffset;
+                const offsetPosition = elementPosition - navbarHeight;
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+                if (navLinks.classList.contains('active')) {
+                    mobileMenu.classList.remove('active');
+                    navLinks.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
